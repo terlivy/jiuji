@@ -70,7 +70,6 @@
 
       <div class="btn-primary" @click="submit">发布记录</div>
     </div>
-    <BottomNav />
   </div>
 </template>
 
@@ -78,7 +77,6 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import api from '@/api'
-import BottomNav from '@/components/BottomNav.vue'
 
 const router = useRouter()
 const showLocation = ref(false)
@@ -176,7 +174,7 @@ async function submit() {
   }
   const res = await api.postRecord(payload)
   if (res.code === 0) {
-    router.push('/')
+    router.push('/feed')
   } else {
     alert(res.msg || '发布失败')
   }

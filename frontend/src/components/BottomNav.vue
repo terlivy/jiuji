@@ -14,7 +14,6 @@
 const navItems = [
   { path: '/',        icon: '🏆', label: '排行榜' },
   { path: '/feed',   icon: '📋', label: '记录' },
-  { path: '/add',    icon: '🍶', label: '记一笔' },
   { path: '/profile',icon: '👤', label: '我的' },
 ]
 </script>

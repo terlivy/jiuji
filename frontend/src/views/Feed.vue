@@ -2,8 +2,8 @@
   <div class="page">
     <div class="header">
       <div class="header-back"></div>
-      <div class="header-title">喝酒记录</div>
-      <div class="header-right"></div>
+      <div class="header-title">酒友圈</div>
+      <div class="header-right" @click="$router.push('/add')">✏️</div>
     </div>
     <div class="tabs">
       <div v-for="t in types" :key="t.value"
