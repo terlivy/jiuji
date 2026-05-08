@@ -32,13 +32,19 @@
       </div>
 
       <!-- 地点 -->
-      <div class="card" style="cursor:pointer;" @click="showLocation=true">
+      <div class="card" style="cursor:pointer;" @click="pickLocation">
         <div style="font-size:12px;color:#bbb;margin-bottom:4px;">地点</div>
         <div style="display:flex;align-items:center;gap:6px;font-size:14px;color:#333;">
           <span>📍</span>
           <span style="flex:1;">{{ form.location_name || '点击选择地点' }}</span>
+          <span v-if="form.latitude" style="font-size:11px;color:#1aad19;">✓ 已定位</span>
           <span style="color:#ccc;">›</span>
         </div>
+      </div>
+
+      <!-- 定位中... -->
+      <div v-if="locating" class="card" style="padding:12px;text-align:center;color:#999;font-size:13px;">
+        📍 定位中...
       </div>
 
       <!-- 好友 -->
@@ -52,12 +58,14 @@
         <div style="font-size:12px;color:#bbb;margin-bottom:8px;">照片</div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
           <div v-for="(img,i) in form.images" :key="i"
-            style="width:80px;height:80px;background:#f0f0f0;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:24px;position:relative;">
-            {{ img }}
-            <span @click="form.images.splice(i,1)" style="position:absolute;top:-6px;right:-6px;background:#999;color:#fff;width:18px;height:18px;border-radius:50%;font-size:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;">×</span>
+            style="width:80px;height:80px;background:#f0f0f0;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:24px;position:relative;overflow:hidden;">
+            <img v-if="img.startsWith('data:')" :src="img" style="width:100%;height:100%;object-fit:cover;">
+            <span v-else>{{ img }}</span>
+            <span @click="form.images.splice(i,1)" style="position:absolute;top:-6px;right:-6px;background:#999;color:#fff;width:18px;height:18px;border-radius:50%;font-size:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:1;">×</span>
           </div>
-          <div style="width:80px;height:80px;background:#f0f0f0;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#bbb;font-size:14px;border:1px dashed #ccc;cursor:pointer;" @click="addPhoto">+ 添加</div>
+          <div style="width:80px;height:80px;background:#f0f0f0;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#bbb;font-size:14px;border:1px dashed #ccc;cursor:pointer;" @click="triggerPhoto">+ 添加</div>
         </div>
+        <input ref="photoInput" type="file" accept="image/*" capture="environment" style="display:none;" @change="onPhotoSelect">
       </div>
 
       <div class="btn-primary" @click="submit">发布记录</div>
@@ -74,10 +82,12 @@ import BottomNav from '@/components/BottomNav.vue'
 
 const router = useRouter()
 const showLocation = ref(false)
+const locating = ref(false)
+const photoInput = ref(null)
 
 const form = ref({
   content: '',
-  drink_type: '啤酒',
+  drink_type: '🍺 啤酒',
   drink_name: '',
   amount: '',
   alcohol_degree: '',
@@ -98,12 +108,73 @@ function addPhoto() {
   form.value.images.push('📷')
 }
 
+function triggerPhoto() {
+  photoInput.value?.click()
+}
+
+function onPhotoSelect(e) {
+  const file = e.target.files[0]
+  if (!file) return
+  const reader = new FileReader()
+  reader.onload = (ev) => {
+    form.value.images.push(ev.target.result)
+  }
+  reader.readAsDataURL(file)
+}
+
+async function pickLocation() {
+  if (!navigator.geolocation) {
+    alert('浏览器不支持定位')
+    return
+  }
+  locating.value = true
+  navigator.geolocation.getCurrentPosition(
+    async (pos) => {
+      const { latitude, longitude } = pos.coords
+      form.value.latitude = latitude
+      form.value.longitude = longitude
+      // 逆地址解析
+      try {
+        const res = await fetch(
+          `https://apis.map.qq.com/jsapi?qt=addr&point=${latitude},${longitude}&key=&encode=1`
+        )
+        const text = await res.text()
+        // 简单解析返回的地址
+        const match = text.match(/\"addr\":\"([^\"]+)\"/)
+        form.value.location_name = match ? match[1] : `${latitude.toFixed(4)},${longitude.toFixed(4)}`
+      } catch {
+        form.value.location_name = `${latitude.toFixed(4)},${longitude.toFixed(4)}`
+      }
+      locating.value = false
+    },
+    (err) => {
+      locating.value = false
+      alert('定位失败：' + err.message)
+    },
+    { enableHighAccuracy: true, timeout: 10000 }
+  )
+}
+
 async function submit() {
   if (!form.value.drink_name || !form.value.amount) {
     alert('请填写酒名和数量')
     return
   }
-  const res = await api.postRecord(form.value)
+  const payload = {
+    content: form.value.content,
+    drink_type: form.value.drink_type,
+    drink_name: form.value.drink_name,
+    amount: form.value.amount,
+    alcohol_degree: form.value.alcohol_degree,
+    latitude: form.value.latitude,
+    longitude: form.value.longitude,
+    location_name: form.value.location_name,
+  }
+  // 真实图片：传 base64 字符串列表（后端需要支持）
+  if (form.value.images.length > 0 && form.value.images[0]?.startsWith('data:')) {
+    payload.images = form.value.images
+  }
+  const res = await api.postRecord(payload)
   if (res.code === 0) {
     router.push('/')
   } else {
