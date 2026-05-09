@@ -1,0 +1,53 @@
+{
+  "白酒": [
+    {"name": "茅台飞天", "brand": "茅台", "ml": 500, "abv": 53, "ref_price": 2500, "tags": ["酱香", "高端"]},
+    {"name": "茅台1935", "brand": "茅台", "ml": 500, "abv": 53, "ref_price": 1200, "tags": ["酱香", "中端"]},
+    {"name": "五粮液普五", "brand": "五粮液", "ml": 500, "abv": 52, "ref_price": 980, "tags": ["浓香", "高端"]},
+    {"name": "国窖1573", "brand": "泸州老窖", "ml": 500, "abv": 52, "ref_price": 900, "tags": ["浓香", "高端"]},
+    {"name": "剑南春水晶剑", "brand": "剑南春", "ml": 500, "abv": 52, "ref_price": 420, "tags": ["浓香", "中端"]},
+    {"name": "舍得", "brand": "舍得", "ml": 500, "abv": 52, "ref_price": 380, "tags": ["浓香", "中端"]},
+    {"name": "水井坊井台", "brand": "水井坊", "ml": 500, "abv": 52, "ref_price": 450, "tags": ["浓香", "中端"]},
+    {"name": "郎酒红花郎十五", "brand": "郎酒", "ml": 500, "abv": 53, "ref_price": 550, "tags": ["酱香", "中端"]},
+    {"name": "习酒窖藏1988", "brand": "习酒", "ml": 500, "abv": 53, "ref_price": 580, "tags": ["酱香", "中端"]},
+    {"name": "珍酒珍十五", "brand": "珍酒", "ml": 500, "abv": 53, "ref_price": 380, "tags": ["酱香", "中端"]},
+    {"name": "金沙回沙摘要", "brand": "金沙", "ml": 500, "abv": 53, "ref_price": 450, "tags": ["酱香", "中端"]},
+    {"name": "钓鱼台珐琅彩", "brand": "钓鱼台", "ml": 500, "abv": 53, "ref_price": 800, "tags": ["酱香", "高端"]},
+    {"name": "小糊涂仙", "brand": "小糊涂仙", "ml": 500, "abv": 52, "ref_price": 150, "tags": ["浓香", "口粮"]},
+    {"name": "玻汾", "brand": "汾酒", "ml": 475, "abv": 53, "ref_price": 50, "tags": ["清香", "口粮"]},
+    {"name": "绿脖西凤", "brand": "西凤", "ml": 500, "abv": 55, "ref_price": 55, "tags": ["凤香", "口粮"]},
+    {"name": "尖庄", "brand": "五粮液", "ml": 500, "abv": 50, "ref_price": 65, "tags": ["浓香", "口粮"]},
+    {"name": "绵竹大曲", "brand": "绵竹", "ml": 500, "abv": 52, "ref_price": 45, "tags": ["浓香", "口粮"]},
+    {"name": "泸州老窖头曲", "brand": "泸州老窖", "ml": 500, "abv": 52, "ref_price": 80, "tags": ["浓香", "口粮"]},
+    {"name": "古井贡酒年份原浆", "brand": "古井贡", "ml": 500, "abv": 50, "ref_price": 200, "tags": ["古井", "中端"]},
+    {"name": "口子窖", "brand": "口子窖", "ml": 500, "abv": 50, "ref_price": 180, "tags": ["兼香", "中端"]}
+  ],
+  "啤酒": [
+    {"name": "雪花纯生", "brand": "华润雪花", "ml": 330, "abv": 4, "ref_price": 6, "tags": ["黄啤"]},
+    {"name": "青岛经典", "brand": "青岛啤酒", "ml": 330, "abv": 4, "ref_price": 5, "tags": ["黄啤"]},
+    {"name": "哈尔滨啤酒小麦王", "brand": "哈尔滨", "ml": 330, "abv": 3.7, "ref_price": 4, "tags": ["黄啤"]},
+    {"name": "百威啤酒", "brand": "百威", "ml": 330, "abv": 4, "ref_price": 8, "tags": ["黄啤"]},
+    {"name": "嘉士伯", "brand": "嘉士伯", "ml": 330, "abv": 4.5, "ref_price": 10, "tags": ["黄啤"]},
+    {"name": "1664白啤", "brand": "1664", "ml": 330, "abv": 5, "ref_price": 15, "tags": ["白啤"]},
+    {"name": "乌苏啤酒红乌苏", "brand": "乌苏", "ml": 620, "abv": 4, "ref_price": 10, "tags": ["黄啤"]},
+    {"name": "泰山原浆7天", "brand": "泰山", "ml": 300, "abv": 5, "ref_price": 12, "tags": ["黄啤", "鲜啤"]}
+  ],
+  "红酒": [
+    {"name": "拉菲传奇", "brand": "拉菲", "ml": 750, "abv": 12.5, "ref_price": 280, "tags": ["波尔多"]},
+    {"name": "张裕解百纳", "brand": "张裕", "ml": 750, "abv": 12, "ref_price": 60, "tags": ["国产"]},
+    {"name": "长城五星", "brand": "长城", "ml": 750, "abv": 12.5, "ref_price": 80, "tags": ["国产"]},
+    {"name": "奔富洛神", "brand": "奔富", "ml": 750, "abv": 13.5, "ref_price": 120, "tags": ["澳大利亚"]},
+    {"name": "奔富407", "brand": "奔富", "ml": 750, "abv": 14.5, "ref_price": 680, "tags": ["澳大利亚", "高端"]},
+    {"name": "黄尾袋鼠西拉", "brand": "黄尾袋鼠", "ml": 750, "abv": 13.5, "ref_price": 55, "tags": ["澳大利亚"]}
+  ],
+  "洋酒": [
+    {"name": "芝华士12年", "brand": "芝华士", "ml": 700, "abv": 40, "ref_price": 220, "tags": ["威士忌", "苏格兰"]},
+    {"name": "尊尼获加黑牌", "brand": "尊尼获加", "ml": 700, "abv": 40, "ref_price": 280, "tags": ["威士忌", "苏格兰"]},
+    {"name": "马爹利名仕", "brand": "马爹利", "ml": 700, "abv": 40, "ref_price": 580, "tags": ["白兰地", "法国"]},
+    {"name": "人头马CLUB", "brand": "人头马", "ml": 700, "abv": 40, "ref_price": 480, "tags": ["白兰地", "法国"]},
+    {"name": "绝对伏特加", "brand": "绝对", "ml": 700, "abv": 40, "ref_price": 180, "tags": ["伏特加", "瑞典"]}
+  ],
+  "黄酒": [
+    {"name": "古越龙山中央库藏", "brand": "古越龙山", "ml": 500, "abv": 14, "ref_price": 80, "tags": ["绍兴黄酒"]},
+    {"name": "会稽山纯正", "brand": "会稽山", "ml": 500, "abv": 14, "ref_price": 25, "tags": ["绍兴黄酒", "口粮"]}
+  ]
+}
