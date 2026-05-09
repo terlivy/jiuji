@@ -110,14 +110,38 @@ function triggerPhoto() {
   photoInput.value?.click()
 }
 
+// compress image to target size (KB)
+function compressImage(file, maxKB = 500) {
+  return new Promise((resolve) => {
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      const img = new Image()
+      img.onload = () => {
+        const canvas = document.createElement('canvas')
+        let { width, height } = img
+        const scale = Math.min(1, Math.sqrt((maxKB * 1024) / (width * height * 0.75)))
+        if (scale < 1) {
+          width = Math.round(width * scale)
+          height = Math.round(height * scale)
+        }
+        canvas.width = width
+        canvas.height = height
+        const ctx = canvas.getContext('2d')
+        ctx.drawImage(img, 0, 0, width, height)
+        resolve(canvas.toDataURL('image/jpeg', 0.85))
+      }
+      img.src = e.target.result
+    }
+    reader.readAsDataURL(file)
+  })
+}
+
 function onPhotoSelect(e) {
   const file = e.target.files[0]
   if (!file) return
-  const reader = new FileReader()
-  reader.onload = (ev) => {
-    form.value.images.push(ev.target.result)
-  }
-  reader.readAsDataURL(file)
+  compressImage(file).then((dataUrl) => {
+    form.value.images.push(dataUrl)
+  })
 }
 
 async function pickLocation() {

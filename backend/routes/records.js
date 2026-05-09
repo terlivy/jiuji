@@ -3,6 +3,15 @@ const router = express.Router();
 const db = require('../config/db');
 const auth = require('../middleware/auth');
 
+// 计算爵位
+function calcTitle(totalDrinks) {
+  if (totalDrinks > 100) return '🍶酒神';
+  if (totalDrinks > 50)  return '🥃酒仙';
+  if (totalDrinks > 20)  return '🍷酒魁';
+  if (totalDrinks > 5)   return '🍵酒客';
+  return '🍃新手';
+}
+
 // GET /api/records
 router.get('/', auth, (req, res) => {
   try {
@@ -13,7 +22,7 @@ router.get('/', auth, (req, res) => {
     if (drink_type) where += ` AND r.drink_type = '${drink_type.replace(/'/g,"''")}'`;
 
     const rows = db.prepare(
-      `SELECT r.*, u.nickname, u.avatar, u.province, u.city, u.level
+      `SELECT r.*, u.nickname, u.avatar, u.province, u.city, u.level, u.title
        FROM drink_records r, users u
        WHERE ${where}
        ORDER BY r.created_at DESC
@@ -50,8 +59,11 @@ router.post('/', auth, (req, res) => {
       friends ? JSON.stringify(friends) : '[]'
     );
 
-    // 更新用户统计
-    db.prepare('UPDATE users SET total_drinks=total_drinks+1, points=points+10 WHERE id=?').run(userId);
+    // 更新用户统计（爵位逻辑）
+    const row = db.prepare('SELECT total_drinks FROM users WHERE id=?').get(userId);
+    const newTotal = (row?.total_drinks || 0) + 1;
+    const newTitle = calcTitle(newTotal);
+    db.prepare('UPDATE users SET total_drinks=?, title=?, points=points+10 WHERE id=?').run(newTotal, newTitle, userId);
 
     // 刷新排行
     refreshRanking(userId);
