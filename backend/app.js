@@ -37,9 +37,11 @@ app.set('db', db);
 app.use('/api/auth',       require('./routes/auth'));
 app.use('/api/users',     require('./routes/users'));
 app.use('/api/records',   require('./routes/records'));
-app.use('/api/rankings',  require('./routes/rankings'));
+app.use('/api/rankings',   require('./routes/rankings'));
+app.use('/api/leaderboard', require('./routes/leaderboard'));
 app.use('/api/achievements', require('./routes/achievements'));
 app.use('/api/follows',    require('./routes/follows'));
+app.use('/api/ai',         require('./routes/ai'));
 
 // health check
 app.get('/health', (req, res) => res.json({ status: 'ok', db: DB_PATH }));
