@@ -42,6 +42,7 @@ app.use('/api/leaderboard', require('./routes/leaderboard'));
 app.use('/api/achievements', require('./routes/achievements'));
 app.use('/api/follows',    require('./routes/follows'));
 app.use('/api/ai',         require('./routes/ai'));
+app.use('/api/points',     require('./routes/points'));
 
 // health check
 app.get('/health', (req, res) => res.json({ status: 'ok', db: DB_PATH }));

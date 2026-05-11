@@ -65,6 +65,13 @@ router.post('/', auth, (req, res) => {
     const newTitle = calcTitle(newTotal);
     db.prepare('UPDATE users SET total_drinks=?, title=?, points=points+10 WHERE id=?').run(newTotal, newTitle, userId);
 
+    // 写积分记录
+    const updatedUser = db.prepare('SELECT points FROM users WHERE id=?').get(userId);
+    const newPoints = updatedUser.points;
+    db.prepare(
+      'INSERT INTO points_history (user_id, reason, amount, balance) VALUES (?, ?, ?, ?)'
+    ).run(userId, '发帖奖励', 10, newPoints);
+
     // 刷新排行
     refreshRanking(userId);
 

@@ -8,8 +8,13 @@ const drinksDb = JSON.parse(
   fs.readFileSync(path.join(__dirname, '../data/drinks_db.json'), 'utf8')
 );
 
+// MiniMax API 配置（用于图片识别）
+
+
+const VISION_MODEL = 'MiniMax-VL-01';
+
 // MiniMax API 配置
-const MINIMAX_API_KEY = process.env.MINIMAX_API_KEY;
+const MINIMAX_API_KEY = process.env.MINIMAX_CN_API_KEY;
 const MINIMAX_BASE_URL = 'https://api.minimaxi.com/v1';
 
 // POST /api/ai/recognize
@@ -21,16 +26,15 @@ router.post('/recognize', async (req, res) => {
 
     // 提取 base64 数据
     const base64Data = image.replace(/^data:image\/\w+;base64,/, '');
-    const imageBuffer = Buffer.from(base64Data, 'base64');
 
-    // 调用 MiniMax 视觉模型识别
+    // 调用 OpenRouter 视觉模型识别
     const prompt = `你是一个酒类识别专家。请分析这张图片中的酒（可能是白酒、啤酒、红酒、洋酒等）。
 
 请以JSON格式返回识别结果：
 {
   "recognized": true/false,  // 是否识别到酒
   "name": "酒名（如果识别到）",
-  "brand": "品牌（如果识别到）", 
+  "brand": "品牌（如果识别到）",
   "type": "白酒/啤酒/红酒/洋酒/黄酒/其他",
   "abv": "酒精度数（如：53）",
   "ml": "容量（毫升，如：500）",
@@ -58,7 +62,7 @@ router.post('/recognize', async (req, res) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'MiniMax-VL-01',
+        model: VISION_MODEL,
         messages: [
           {
             role: 'user',
@@ -73,18 +77,18 @@ router.post('/recognize', async (req, res) => {
     });
 
     const data = await response.json();
-    
+
     if (!response.ok) {
-      console.error('[AI] MiniMax API error:', data);
+      console.error('[AI] OpenRouter API error:', data);
       return res.status(500).json({ code: 500, msg: 'AI识别服务异常', error: data });
     }
 
     const raw = data.choices?.[0]?.message?.content || '';
-    
+
     // 解析 JSON 响应
     let result;
     try {
-      const jsonMatch = raw.match(/```json\n?([\s\S]*?)\n?```/) 
+      const jsonMatch = raw.match(/```json\n?([\s\S]*?)\n?```/)
         || raw.match(/```\n?([\s\S]*?)\n?```/)
         || [null, raw];
       const jsonStr = jsonMatch[1] || raw;
@@ -131,7 +135,7 @@ function matchLocalDb(aiResult) {
   };
 
   const category = typeMap[aiResult.type] || aiResult.type || '';
-  
+
   if (!category || !drinksDb[category]) return null;
 
   const list = drinksDb[category];
