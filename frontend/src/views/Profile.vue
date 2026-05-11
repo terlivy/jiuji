@@ -21,9 +21,9 @@
         <div class="stat-num">{{ user?.total_drinks || 0 }}</div>
         <div class="stat-label">喝酒次数</div>
       </div>
-      <div class="stat-item">
+      <div class="stat-item" @click="$router.push('/points')">
         <div class="stat-num">{{ user?.points || 0 }}</div>
-        <div class="stat-label">积分</div>
+        <div class="stat-label">积分 ›</div>
       </div>
       <div class="stat-item">
         <div class="stat-num">{{ followersCount }}</div>

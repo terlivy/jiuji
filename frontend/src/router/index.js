@@ -5,12 +5,14 @@ import AddRecord from '@/views/AddRecord.vue'
 import Profile from '@/views/Profile.vue'
 import OtherProfile from '@/views/OtherProfile.vue'
 import Login from '@/views/Login.vue'
+import PointsDetail from '@/views/PointsDetail.vue'
 
 const routes = [
   { path: '/',        name: 'Home',        component: Home },
   { path: '/feed',   name: 'Feed',       component: Feed },
   { path: '/add',    name: 'AddRecord',  component: AddRecord },
   { path: '/profile',name: 'Profile',    component: Profile },
+  { path: '/points', name: 'Points',     component: PointsDetail },
   { path: '/user/:id',name:'OtherProfile',component: OtherProfile },
   { path: '/login',  name: 'Login',      component: Login },
 ]
