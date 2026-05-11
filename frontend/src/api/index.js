@@ -39,6 +39,9 @@ export default {
   getRankings: (params) => api.get('/rankings', { params }),
   getMyRank:   (params) => api.get('/rankings/my', { params }),
 
+  // leaderboard
+  getLeaderboard: (params) => api.get('/leaderboard', { params }),
+
   // achievements
   getAchievements: () => api.get('/achievements'),
 
