@@ -13,7 +13,7 @@ export const usePointsStore = defineStore('points', {
   }),
   actions: {
     async fetchPoints() {
-      const res = await api.get('/points')
+      const res = await api.getPoints()
       if (res.code === 0) {
         this.points = res.data.points
         this.totalEarned = res.data.totalEarned
@@ -23,7 +23,7 @@ export const usePointsStore = defineStore('points', {
       return res
     },
     async fetchHistory(page = 1) {
-      const res = await api.get('/points/history', { params: { page, limit: 20 } })
+      const res = await api.getPointsHistory({ page, limit: 20 })
       if (res.code === 0) {
         if (page === 1) this.history = res.data
         else this.history.push(...res.data)

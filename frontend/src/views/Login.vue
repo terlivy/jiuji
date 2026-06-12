@@ -37,6 +37,7 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
+import { isAlreadyRegisteredError } from '@/utils/auth-errors.mjs'
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -91,12 +92,26 @@ const citiesMap = {
 const cities = computed(() => citiesMap[form.value.province] || [])
 const canSubmit = computed(() => form.value.phone.length === 11 && form.value.nickname && form.value.province && form.value.city)
 
+async function loginExistingUser() {
+  const loginRes = await userStore.login(form.value.phone)
+  if (loginRes?.code !== 0) throw new Error('login failed')
+}
+
 async function handleLogin() {
   if (!canSubmit.value || loading.value) return
   loading.value = true
   try {
     // 先注册（用户输入手机号=登录逻辑合并）
-    const res = await userStore.register(form.value)
+    let res
+    try {
+      res = await userStore.register(form.value)
+    } catch (registerError) {
+      if (!isAlreadyRegisteredError(registerError)) throw registerError
+      await loginExistingUser()
+      await userStore.fetchProfile()
+      router.push('/')
+      return
+    }
     if (res?.code === 409) {
       // 已注册，走登录
       const loginRes = await userStore.login(form.value.phone)

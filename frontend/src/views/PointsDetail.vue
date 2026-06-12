@@ -82,7 +82,7 @@ onMounted(() => {
 
 async function fetchOverview() {
   try {
-    const res = await api.get('/points')
+    const res = await api.getPoints()
     if (res.code === 0) overview.value = res.data
   } catch (e) {
     console.error(e)
@@ -92,7 +92,7 @@ async function fetchOverview() {
 async function fetchHistory() {
   loading.value = true
   try {
-    const res = await api.get(`/points/history?page=${page.value}&limit=${pageSize}`)
+    const res = await api.getPointsHistory({ page: page.value, limit: pageSize })
     if (res.code === 0) {
       history.value = res.data
       hasMore.value = res.data.length === pageSize
@@ -108,7 +108,7 @@ async function loadMore() {
   if (!hasMore.value) return
   page.value++
   try {
-    const res = await api.get(`/points/history?page=${page.value}&limit=${pageSize}`)
+    const res = await api.getPointsHistory({ page: page.value, limit: pageSize })
     if (res.code === 0) {
       history.value.push(...res.data)
       hasMore.value = res.data.length === pageSize

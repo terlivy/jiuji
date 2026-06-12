@@ -45,6 +45,10 @@ export default {
   // achievements
   getAchievements: () => api.get('/achievements'),
 
+  // points
+  getPoints: () => api.get('/points'),
+  getPointsHistory: (params) => api.get('/points/history', { params }),
+
   // follows
   follow:       (id) => api.post('/follows', { following_id: id }),
   unfollow:     (id) => api.delete(`/follows/${id}`),

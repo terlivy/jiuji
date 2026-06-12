@@ -4,6 +4,7 @@ const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
 const Database = require('better-sqlite3');
+const { ensureUserTitleColumn } = require('./config/migrate');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -28,6 +29,8 @@ const statements = schemaSql.split(';').map(s => s.trim()).filter(s => s.length 
 for (const stmt of statements) {
   try { db.exec(stmt); } catch(e) { /* ignore dup errors */ }
 }
+
+ensureUserTitleColumn(db);
 console.log('✅ SQLite DB ready:', DB_PATH);
 
 // Make db available to routes

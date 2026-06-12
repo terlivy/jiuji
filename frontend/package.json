@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "vite",
+    "test:api": "node scripts/check-api-usage.mjs",
+    "test:login": "node scripts/check-login-errors.mjs",
     "build": "vite build",
     "preview": "vite preview"
   },

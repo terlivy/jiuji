@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS users (
   avatar       TEXT DEFAULT '',
   province     TEXT NOT NULL,
   city         TEXT NOT NULL,
+  title        TEXT DEFAULT '',
   level        INTEGER DEFAULT 1,
   points       INTEGER DEFAULT 0,
   total_drinks INTEGER DEFAULT 0,
